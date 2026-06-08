@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>静思自习室 - 在线预约管理系统</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
+    <!-- 自定义样式 -->
+    <link href="css/style.css" rel="stylesheet">
+</head>
+<body>
+
+<!-- ==================== NAVBAR ==================== -->
+<nav class="navbar navbar-expand-lg sticky-top">
+    <div class="container">
+        <a class="navbar-brand" href="#" onclick="navigate('home')">
+            <i class="fas fa-book-reader"></i>静思自习室
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center" id="navLinks">
+                <!-- 由 JS 动态渲染 -->
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<!-- ==================== TOAST CONTAINER ==================== -->
+<div class="toast-container" id="toastContainer"></div>
+
+<!-- ==================== MAIN CONTENT ==================== -->
+<div class="main-content">
+<div class="container">
+
+<!-- ===== 首页 ===== -->
+<div id="view-home" class="view-container active">
+    <!-- Hero -->
+    <div class="hero-section px-4">
+        <div class="row align-items-center">
+            <div class="col-lg-7">
+                <h1><i class="fas fa-book-open"></i> 静思自习室</h1>
+                <p class="mt-3 mb-4">城市中的安静角落，为您提供高效专注的学习与工作环境。<br>舒适座椅、高速WiFi、独立灯光、免费茶水，让您沉浸其中。</p>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button class="btn btn-light btn-lg" onclick="navigate('user-login')"><i class="fas fa-calendar-check"></i> 立即预约</button>
+                    <button class="btn btn-outline-light btn-lg" onclick="navigate('seats')"><i class="fas fa-chair"></i> 浏览座位</button>
+                </div>
+            </div>
+            <div class="col-lg-5 text-center d-none d-lg-block">
+                <i class="fas fa-building" style="font-size:10rem;opacity:0.2;"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="row g-4 mb-4">
+        <div class="col-md-4"><div class="feature-icon blue mx-auto"><i class="fas fa-wifi"></i></div><h5 class="text-center">高速WiFi</h5><p class="text-center text-muted small">千兆光纤网络，视频会议、在线学习零延迟</p></div>
+        <div class="col-md-4"><div class="feature-icon orange mx-auto"><i class="fas fa-mug-hot"></i></div><h5 class="text-center">免费茶饮</h5><p class="text-center text-muted small">咖啡、茶饮无限量供应，随时补充能量</p></div>
+        <div class="col-md-4"><div class="feature-icon green mx-auto"><i class="fas fa-shield-alt"></i></div><h5 class="text-center">安全舒适</h5><p class="text-center text-muted small">24小时监控、独立储物柜、静音环境保障</p></div>
+    </div>
+
+    <div class="row g-4">
+        <!-- 公告 -->
+        <div class="col-lg-6">
+            <div class="card h-100">
+                <div class="card-header"><i class="fas fa-bullhorn text-warning me-2"></i>最新公告</div>
+                <div class="card-body" id="homeAnnouncements"></div>
+            </div>
+        </div>
+        <!-- 开放时间 & 收费 -->
+        <div class="col-lg-6">
+            <div class="card mb-3">
+                <div class="card-header"><i class="fas fa-clock text-info me-2"></i>开放时间</div>
+                <div class="card-body" id="homeHours"></div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-tag text-success me-2"></i>收费标准</div>
+                <div class="card-body" id="homePrices"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 用户登录 ===== -->
+<div id="view-user-login" class="view-container">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card">
+                <div class="card-header text-center"><i class="fas fa-user-circle me-2"></i>用户登录</div>
+                <div class="card-body">
+                    <form id="userLoginForm" onsubmit="return false;">
+                        <div class="mb-3"><label class="form-label">用户名</label><input type="text" class="form-control" id="loginUsername" placeholder="请输入用户名" required></div>
+                        <div class="mb-3"><label class="form-label">密码</label><input type="password" class="form-control" id="loginPassword" placeholder="请输入密码" required></div>
+                        <button type="submit" class="btn btn-primary w-100" onclick="userLogin()"><i class="fas fa-sign-in-alt me-1"></i>登录</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <small>还没有账号？<a href="#" onclick="navigate('user-register')" class="text-decoration-none">立即注册</a></small>
+                    </div>
+                    <div class="text-center mt-2">
+                        <small class="text-muted">测试账号：testuser / 123456</small>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" onclick="navigate('admin-login')" class="btn btn-outline-secondary btn-sm"><i class="fas fa-user-shield me-1"></i>管理员登录入口</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 用户注册 ===== -->
+<div id="view-user-register" class="view-container">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card">
+                <div class="card-header text-center"><i class="fas fa-user-plus me-2"></i>用户注册</div>
+                <div class="card-body">
+                    <form id="userRegisterForm" onsubmit="return false;">
+                        <div class="mb-3"><label class="form-label">用户名</label><input type="text" class="form-control" id="regUsername" placeholder="3-20位字符" required minlength="3" maxlength="20"></div>
+                        <div class="mb-3"><label class="form-label">手机号</label><input type="tel" class="form-control" id="regPhone" placeholder="请输入手机号（可选）"></div>
+                        <div class="mb-3"><label class="form-label">密码</label><input type="password" class="form-control" id="regPassword" placeholder="至少6位" required minlength="6"></div>
+                        <div class="mb-3"><label class="form-label">确认密码</label><input type="password" class="form-control" id="regPassword2" placeholder="请再次输入密码" required minlength="6"></div>
+                        <button type="submit" class="btn btn-primary w-100" onclick="userRegister()"><i class="fas fa-check me-1"></i>注册</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <small>已有账号？<a href="#" onclick="navigate('user-login')" class="text-decoration-none">立即登录</a></small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 管理员登录 ===== -->
+<div id="view-admin-login" class="view-container">
+    <div class="row justify-content-center">
+        <div class="col-md-5 col-lg-4">
+            <div class="card border-warning">
+                <div class="card-header text-center bg-warning bg-opacity-10"><i class="fas fa-user-shield me-2 text-warning"></i>管理员登录</div>
+                <div class="card-body">
+                    <form id="adminLoginForm" onsubmit="return false;">
+                        <div class="mb-3"><label class="form-label">管理员账号</label><input type="text" class="form-control" id="adminUsername" placeholder="请输入管理员账号" required></div>
+                        <div class="mb-3"><label class="form-label">管理员密码</label><input type="password" class="form-control" id="adminPassword" placeholder="请输入管理员密码" required></div>
+                        <button type="submit" class="btn btn-accent w-100" onclick="adminLogin()"><i class="fas fa-lock-open me-1"></i>管理员登录</button>
+                    </form>
+                    <div class="text-center mt-3">
+                        <small class="text-muted">默认账号：admin / 123456</small>
+                    </div>
+                </div>
+            </div>
+            <div class="text-center mt-3">
+                <a href="#" onclick="navigate('user-login')" class="btn btn-outline-primary btn-sm"><i class="fas fa-user me-1"></i>返回用户登录</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 座位浏览 ===== -->
+<div id="view-seats" class="view-container">
+    <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+        <h4 class="mb-0"><i class="fas fa-chair me-2 text-primary"></i>座位浏览</h4>
+        <div>
+            <span class="status-badge status-available me-1">● 可用</span>
+            <span class="status-badge status-reserved me-1">● 已预约</span>
+            <span class="status-badge status-in_use">● 使用中</span>
+        </div>
+    </div>
+    <div class="row g-3" id="seatGrid"></div>
+</div>
+
+<!-- ===== 我要预约 ===== -->
+<div id="view-reserve" class="view-container">
+    <h4 class="mb-4"><i class="fas fa-calendar-plus me-2 text-primary"></i>我要预约</h4>
+    <div class="row g-4">
+        <div class="col-lg-8">
+            <div class="card">
+                <div class="card-header">选择座位</div>
+                <div class="card-body">
+                    <div class="row g-3" id="reserveSeatGrid"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-4">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-sliders-h me-2"></i>预约信息</div>
+                <div class="card-body">
+                    <form id="reserveForm" onsubmit="return false;">
+                        <div class="mb-3"><label class="form-label">预约日期</label><input type="date" class="form-control" id="reserveDate" required></div>
+                        <div class="mb-3"><label class="form-label">选择时间段</label><div id="timeSlotPicker"></div></div>
+                        <input type="hidden" id="reserveSeatId">
+                        <div class="mb-3"><p class="form-control-plaintext text-muted" id="reserveSeatInfo">请先在左侧选择座位</p></div>
+                        <button type="submit" class="btn btn-primary w-100" onclick="submitReservation()"><i class="fas fa-check-circle me-1"></i>确认预约</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 我的预约 ===== -->
+<div id="view-my-reservations" class="view-container">
+    <h4 class="mb-4"><i class="fas fa-list-check me-2 text-primary"></i>我的预约</h4>
+    <div class="card">
+        <div class="card-body p-0">
+            <div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>座位</th><th>日期</th><th>时间段</th><th>状态</th><th>预约时间</th><th>操作</th></tr></thead><tbody id="myReservationsTable"></tbody></table></div>
+            <div class="empty-state" id="myReservationsEmpty" style="display:none;"><i class="fas fa-inbox"></i><p>暂无预约记录</p></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 个人中心 ===== -->
+<div id="view-profile" class="view-container">
+    <h4 class="mb-4"><i class="fas fa-id-card me-2 text-primary"></i>个人中心</h4>
+    <div class="row g-4">
+        <div class="col-lg-5">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-user me-2"></i>个人信息</div>
+                <div class="card-body" id="profileInfo"></div>
+            </div>
+        </div>
+        <div class="col-lg-7">
+            <div class="card">
+                <div class="card-header"><i class="fas fa-key me-2"></i>修改密码</div>
+                <div class="card-body">
+                    <form id="changePwdForm" onsubmit="return false;">
+                        <div class="mb-3"><label class="form-label">原密码</label><input type="password" class="form-control" id="oldPassword" required></div>
+                        <div class="mb-3"><label class="form-label">新密码</label><input type="password" class="form-control" id="newPassword" required minlength="6"></div>
+                        <div class="mb-3"><label class="form-label">确认新密码</label><input type="password" class="form-control" id="newPassword2" required minlength="6"></div>
+                        <button type="submit" class="btn btn-primary" onclick="changePassword()"><i class="fas fa-save me-1"></i>修改密码</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ==================== 管理员视图 ==================== -->
+
+<!-- ===== 管理员控制台 ===== -->
+<div id="view-admin-dashboard" class="view-container">
+    <h4 class="mb-4"><i class="fas fa-tachometer-alt me-2 text-primary"></i>管理员控制台</h4>
+    <div class="row g-3 mb-4" id="adminStats"></div>
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card"><div class="card-header"><i class="fas fa-clock me-2"></i>今日预约概览</div><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>用户</th><th>座位</th><th>时间段</th><th>状态</th></tr></thead><tbody id="adminTodayReservations"></tbody></table></div><div class="empty-state" id="adminTodayEmpty" style="display:none;"><i class="fas fa-calendar-xmark"></i><p>今日暂无预约</p></div></div></div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card"><div class="card-header"><i class="fas fa-bullhorn me-2"></i>公告管理快捷</div><div class="card-body"><form id="quickAnnounceForm" onsubmit="return false;"><div class="mb-2"><input type="text" class="form-control" id="quickAnnTitle" placeholder="公告标题" required></div><div class="mb-2"><textarea class="form-control" id="quickAnnContent" rows="2" placeholder="公告内容" required></textarea></div><button type="submit" class="btn btn-primary btn-sm" onclick="addQuickAnnounce()"><i class="fas fa-plus me-1"></i>发布公告</button></form></div></div>
+        </div>
+    </div>
+</div>
+
+<!-- ===== 管理员-用户管理 ===== -->
+<div id="view-admin-users" class="view-container">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"><h4 class="mb-0"><i class="fas fa-users me-2 text-primary"></i>用户管理</h4><span class="text-muted" id="adminUserCount"></span></div>
+    <div class="card"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>ID</th><th>用户名</th><th>手机号</th><th>角色</th><th>状态</th><th>注册时间</th><th>操作</th></tr></thead><tbody id="adminUsersTable"></tbody></table></div></div></div>
+</div>
+
+<!-- ===== 管理员-座位管理 ===== -->
+<div id="view-admin-seats" class="view-container">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"><h4 class="mb-0"><i class="fas fa-chair me-2 text-primary"></i>座位管理</h4><button class="btn btn-primary btn-sm" onclick="showAddSeatModal()"><i class="fas fa-plus me-1"></i>添加座位</button></div>
+    <div class="card"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>ID</th><th>座位名称</th><th>位置</th><th>类型</th><th>状态</th><th>描述</th><th>操作</th></tr></thead><tbody id="adminSeatsTable"></tbody></table></div></div></div>
+</div>
+
+<!-- ===== 管理员-预约管理 ===== -->
+<div id="view-admin-reservations" class="view-container">
+    <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2"><h4 class="mb-0"><i class="fas fa-calendar-alt me-2 text-primary"></i>预约管理</h4><button class="btn btn-outline-primary btn-sm" onclick="exportReservations()"><i class="fas fa-download me-1"></i>导出记录</button></div>
+    <div class="card"><div class="card-body p-0"><div class="table-responsive"><table class="table table-hover mb-0"><thead><tr><th>ID</th><th>用户</th><th>座位</th><th>日期</th><th>时间段</th><th>状态</th><th>预约时间</th><th>操作</th></tr></thead><tbody id="adminReservationsTable"></tbody></table></div></div></div>
+</div>
+
+<!-- ===== 管理员-系统设置 ===== -->
+<div id="view-admin-settings" class="view-container">
+    <h4 class="mb-4"><i class="fas fa-cog me-2 text-primary"></i>系统设置</h4>
+    <div class="row g-4">
+        <div class="col-lg-6">
+            <div class="card"><div class="card-header"><i class="fas fa-bullhorn me-2"></i>公告管理</div><div class="card-body"><div id="adminAnnounceList" class="mb-3"></div><form id="announceForm" onsubmit="return false;"><div class="mb-2"><input type="text" class="form-control" id="annTitle" placeholder="标题" required></div><div class="mb-2"><textarea class="form-control" id="annContent" rows="2" placeholder="内容" required></textarea></div><button type="submit" class="btn btn-primary btn-sm" onclick="addAnnounce()"><i class="fas fa-plus me-1"></i>添加公告</button></form></div></div>
+        </div>
+        <div class="col-lg-6">
+            <div class="card mb-3"><div class="card-header"><i class="fas fa-clock me-2"></i>开放时间</div><div class="card-body"><form id="hoursForm" onsubmit="return false;"><div class="row g-2"><div class="col-6"><label class="form-label">开门时间</label><input type="time" class="form-control" id="setOpenTime"></div><div class="col-6"><label class="form-label">关门时间</label><input type="time" class="form-control" id="setCloseTime"></div></div><button type="submit" class="btn btn-primary btn-sm mt-2" onclick="saveHours()"><i class="fas fa-save me-1"></i>保存</button></form></div></div>
+            <div class="card mb-3"><div class="card-header"><i class="fas fa-tag me-2"></i>收费标准</div><div class="card-body"><form id="priceForm" onsubmit="return false;"><div class="mb-2"><label class="form-label">收费标准（支持HTML）</label><textarea class="form-control" id="setPrice" rows="3"></textarea></div><button type="submit" class="btn btn-primary btn-sm" onclick="savePrice()"><i class="fas fa-save me-1"></i>保存</button></form></div></div>
+            <div class="card"><div class="card-header"><i class="fas fa-key me-2"></i>修改管理员密码</div><div class="card-body"><form id="adminPwdForm" onsubmit="return false;"><div class="mb-2"><label class="form-label">新密码</label><input type="password" class="form-control" id="adminNewPwd" required minlength="6"></div><button type="submit" class="btn btn-accent btn-sm" onclick="changeAdminPwd()"><i class="fas fa-save me-1"></i>修改密码</button></form></div></div>
+        </div>
+    </div>
+</div>
+
+</div><!-- /container -->
+</div><!-- /main-content -->
+
+<!-- ==================== FOOTER ==================== -->
+<div class="footer">
+    <div class="container">
+        <p class="mb-0">&copy; 2026 静思自习室 - 在线预约管理系统 | 用心营造安静学习空间</p>
+    </div>
+</div>
+
+<!-- ==================== MODALS ==================== -->
+
+<!-- 通用确认Modal -->
+<div class="modal fade" id="confirmModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered modal-sm"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="confirmModalTitle">确认操作</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body" id="confirmModalBody">确定要执行此操作吗？</div><div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">取消</button><button type="button" class="btn btn-danger btn-sm" id="confirmModalBtn">确认</button></div></div></div>
+</div>
+
+<!-- 座位编辑Modal -->
+<div class="modal fade" id="seatModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered"><div class="modal-content"><div class="modal-header"><h5 class="modal-title" id="seatModalTitle">编辑座位</h5><button type="button" class="btn-close" data-bs-dismiss="modal"></button></div><div class="modal-body"><form id="seatForm" onsubmit="return false;">
+        <input type="hidden" id="seatEditId">
+        <div class="row g-2"><div class="col-md-6"><label class="form-label">座位名称</label><input type="text" class="form-control" id="seatName" required></div><div class="col-md-6"><label class="form-label">位置</label><input type="text" class="form-control" id="seatLocation" required></div></div>
+        <div class="row g-2 mt-2"><div class="col-md-6"><label class="form-label">类型</label><select class="form-select" id="seatType"><option value="标准座">标准座</option><option value="靠窗座">靠窗座</option><option value="VIP座">VIP座</option><option value="双人座">双人座</option><option value="卡座">卡座</option></select></div><div class="col-md-6"><label class="form-label">状态</label><select class="form-select" id="seatStatus"><option value="available">可用</option><option value="reserved">已预约</option><option value="in_use">使用中</option></select></div></div>
+        <div class="mt-2"><label class="form-label">描述</label><textarea class="form-control" id="seatDesc" rows="2"></textarea></div>
+    </form></div><div class="modal-footer"><button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">取消</button><button type="button" class="btn btn-primary btn-sm" onclick="saveSeat()"><i class="fas fa-save me-1"></i>保存</button></div></div></div>
+</div>
+
+<!-- Bootstrap 5 JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<!-- 自定义脚本 -->
+<script src="js/main.js"></script>
+</body>
+</html>
